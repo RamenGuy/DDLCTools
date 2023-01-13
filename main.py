@@ -7,6 +7,8 @@ from PIL import ImageTk, Image
 from tkinter import ttk
 from tkinter import font
 
+# Compile command: pyinstaller -F -i icon.png -w main.py
+
 main = tk.Tk()
 main.title("DDLC Tools")
 main.resizable(False, False)
