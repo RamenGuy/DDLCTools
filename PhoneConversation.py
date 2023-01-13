@@ -1,17 +1,15 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 from tkinter import ttk
-from tkinter import font
+
 
 def main():
     master = tk.Tk()
     master.title("Phone Call Helper")
     master.resizable(False, False)
-    buttonFont = font.Font(family="segoe", size=12)
     style1 = ttk.Style(master)
     style1.configure('TFrame')
     style1.configure('mainFrame.TFrame', background="#191a36")
-    buttonsColor = "#0d0e28"
     ico = Image.open('icon.png')
     photo = ImageTk.PhotoImage(ico)
     if __name__ == '__main__':

@@ -1,5 +1,7 @@
 import PhoneConversation
 import PoemWordHelper
+import GCHelper
+import GCRegisterHelper
 import tkinter as tk
 from PIL import ImageTk, Image
 from tkinter import ttk
@@ -26,5 +28,11 @@ buttonPhone = tk.Button(frame, text="Phone Conversation Helper", command=PhoneCo
                         background=buttonsColor, font=buttonFont, foreground="#ffffff", activebackground="#0a0a1a",
                         activeforeground="#a8a8a8")
 buttonPhone.grid(column=1, row=0)
+buttonGC = tk.Button(frame, text="GC Helper", command=GCHelper.main, background=buttonsColor,
+                     font=buttonFont, foreground="#ffffff", activebackground="#0a0a1a", activeforeground="#a8a8a8")
+buttonGC.grid(column=0, row=1)
+buttonGCReg = tk.Button(frame, text="GC Registration Helper", command=GCRegisterHelper.main, background=buttonsColor,
+                     font=buttonFont, foreground="#ffffff", activebackground="#0a0a1a", activeforeground="#a8a8a8")
+buttonGCReg.grid(column=1, row=1)
 
 main.mainloop()
