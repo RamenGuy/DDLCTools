@@ -12,7 +12,7 @@ def main():
     style1.configure('TFrame')
     style1.configure('mainFrame.TFrame', background="#191a36")
     buttonsColor = "#0d0e28"
-    ico = Image.open('mm.png')
+    ico = Image.open('icon.png')
     photo = ImageTk.PhotoImage(ico)
     if __name__ == '__main__':
         master.wm_iconphoto(False, photo)

@@ -14,7 +14,7 @@ style1.configure('TFrame')
 style1.configure('mainFrame.TFrame', background="#191a36")
 buttonsColor = "#0d0e28"
 
-ico = Image.open('mm.png')
+ico = Image.open('icon.png')
 photo = ImageTk.PhotoImage(ico)
 main.wm_iconphoto(True, photo)
 frame = ttk.Frame(main, relief='sunken', style='mainFrame.TFrame', borderwidth=2)

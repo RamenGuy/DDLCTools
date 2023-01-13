@@ -10,7 +10,7 @@ def main():
     master = tk.Tk()
     master.title("Poem Word List Helper")
     master.resizable(False, False)
-    ico = Image.open('mm.png')
+    ico = Image.open('icon.png')
     photo = ImageTk.PhotoImage(ico)
     if __name__ == '__main__':
         master.wm_iconphoto(False, photo)
