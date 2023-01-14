@@ -48,16 +48,15 @@ def main():
 
 
     eyes = []
-    if len(characterListBox.curselection()):
-        for filename in os.listdir(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/"):
-            with open(os.path.join(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/",
-                          filename), 'r') as f:  # open in readonly mode
-                if filename.startswith(f"{characterFullNames[characterListBox.curselection()[0]]}_{poseBox.selection_get()}_eyes"):
-                    eyes.append(filename)
+
     eyesString = tk.StringVar(master, value=eyes)
     eyesListBox = tk.Listbox(master, listvariable=eyesString, height=len(eyes))
     eyesListBox.grid(column=2, row=2)
 
+    eyebrows = []
+    eyebrowString = tk.StringVar(master, value=eyebrows)
+    eyebrowListBox = tk.Listbox(master, listvariable=eyebrowString, height=len(eyebrows))
+    eyebrowListBox.grid(column=2, row=3)
     def addImage():
         global myimg
         fg = Image.open(os.getcwd() + "/sayori/" + fileBox.selection_get())
@@ -67,13 +66,43 @@ def main():
         imageLabel.config(image=myimg)
     addImageButton = tk.Button(master, text="Add", command=addImage)
     addImageButton.grid(column=0, row=1)
-    
+
+    def loadEyes():
+        for filename in os.listdir(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/"):
+            with open(os.path.join(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/",
+                                   filename), 'r') as f:  # open in readonly mode
+                if filename.startswith(
+                        f"{characterFullNames[characterListBox.curselection()[0]]}_{posesListBox.selection_get()}_eyes"):
+                    eyes.append(filename)
+                    eyesString.set(eyes)
+
+    def loadEyebrows():
+        for filename in os.listdir(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/"):
+            with open(os.path.join(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/",
+                                   filename), 'r') as f:  # open in readonly mode
+                if filename.startswith(
+                        f"{characterFullNames[characterListBox.curselection()[0]]}_{posesListBox.selection_get()}_eyebrows"):
+                    eyebrows.append(filename)
+                    eyebrowString.set(eyebrows)
+
+    def loadPose():
+        loadEyes()
+        loadEyebrows()
+
+    def selchar():
+        for filename in os.listdir(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/"):
+            with open(os.path.join(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/",
+                                   filename), 'r') as f:  # open in readonly mode
+                if filename.startswith(
+                        f"{characterFullNames[characterListBox.curselection()[0]]}_{posesListBox.selection_get()}_eyebrows"):
+                    eyebrows.append(filename)
+                    eyebrowString.set(eyebrows)
+
     def compileImage():
         global myimg
-        try:
-            fg = Image.open(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/" + fileBox.selection_get())
-        except IndexError:
-            ...
+
+        body_base = Image.open(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/" + fileBox.selection_get())
+
         imager = ImageTk.getimage(myimg)
         imager.paste(im=fg, box=(0, 0), mask=fg)
         myimg = ImageTk.PhotoImage(imager)
