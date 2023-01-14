@@ -6,7 +6,7 @@ Currently contains:
 * A tool for quickly adding poem words.
 
 Plans:
-* Add a tool for making Elckarow's EMR phone GCs easily
-* Add a tool for previewing Mood Pose Tool poses, and easily adding your own attributes
-
+* Add a tool for making Elckarow's EMR phone GCs easily (Done, but not released fully)
+* Add a tool for previewing Mood Pose Tool poses, and easily adding your own attributes (In progress)
+ 
 Feel free to suggest additions!
