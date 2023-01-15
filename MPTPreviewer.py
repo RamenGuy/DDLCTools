@@ -39,19 +39,21 @@ def main():
 
     characterString = tk.StringVar(master, value=characterFullNames)
     characterListBox = tk.Listbox(master, listvariable=characterString, height=len(characterFullNames))
-    characterListBox.grid(column=2, row=0)
+    characterListBox.grid(column=2, row=3)
 
-    poses = []
+    with open("mpt_s.txt", "r") as t:
+        assets = eval(t.read())
+
+    poses = assets['bodybase']
     posesString = tk.StringVar(master, value=poses)
     posesListBox = tk.Listbox(master, listvariable=posesString, height=len(poses))
     posesListBox.grid(column=2, row=1)
 
 
-    eyes = []
-
+    eyes = assets['eyes']
     eyesString = tk.StringVar(master, value=eyes)
     eyesListBox = tk.Listbox(master, listvariable=eyesString, height=len(eyes))
-    eyesListBox.grid(column=2, row=2)
+    eyesListBox.grid(column=2, row=0)
 
     eyebrows = []
     eyebrowString = tk.StringVar(master, value=eyebrows)
@@ -67,27 +69,7 @@ def main():
     addImageButton = tk.Button(master, text="Add", command=addImage)
     addImageButton.grid(column=0, row=1)
 
-    def loadEyes():
-        for filename in os.listdir(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/"):
-            with open(os.path.join(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/",
-                                   filename), 'r') as f:  # open in readonly mode
-                if filename.startswith(
-                        f"{characterFullNames[characterListBox.curselection()[0]]}_{posesListBox.selection_get()}_eyes"):
-                    eyes.append(filename)
-                    eyesString.set(eyes)
 
-    def loadEyebrows():
-        for filename in os.listdir(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/"):
-            with open(os.path.join(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/",
-                                   filename), 'r') as f:  # open in readonly mode
-                if filename.startswith(
-                        f"{characterFullNames[characterListBox.curselection()[0]]}_{posesListBox.selection_get()}_eyebrows"):
-                    eyebrows.append(filename)
-                    eyebrowString.set(eyebrows)
-
-    def loadPose():
-        loadEyes()
-        loadEyebrows()
 
     def selchar():
         for filename in os.listdir(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/"):
@@ -104,7 +86,7 @@ def main():
         body_base = Image.open(os.getcwd() + f"/{characterFullNames[characterListBox.curselection()[0]]}/" + fileBox.selection_get())
 
         imager = ImageTk.getimage(myimg)
-        imager.paste(im=fg, box=(0, 0), mask=fg)
+        imager.paste(im=body_base, box=(0, 0), mask=body_base)
         myimg = ImageTk.PhotoImage(imager)
         imageLabel.config(image=myimg)
     compileButton = tk.Button(master, text="Compile", command=compileImage)
