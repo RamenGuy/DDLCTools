@@ -19,6 +19,8 @@ def main():
     global noseAssets
     global eyesAssets
     global eyebrowsAssets
+    global poseAssets
+    global specialAssets
     master = tk.Tk()
     master.title("MPT Previewer")
     style1 = ttk.Style(master)
@@ -43,10 +45,13 @@ def main():
         characterFullNames = list(characters.keys())
 
     characterString = tk.StringVar(master, value="")
-    characterListBox = ttk.Combobox(master, textvariable=characterString, height=len(characterFullNames), values=characterFullNames[0:4])
+    charFrame = tk.Frame(master, relief='sunken', borderwidth=5)
+    charFrame.grid(column=0, row=0)
+    characterListBox = ttk.Combobox(charFrame, textvariable=characterString, height=len(characterFullNames), values=characterFullNames[0:4])
     characterListBox.grid(column=0, row=0)
     assetFrame = tk.Frame(master, relief='sunken', borderwidth=2)
     assetFrame.grid(column=0, row=1)
+    poseAssets = []
     lAssets = []
     rAssets = []
     headAssets = []
@@ -54,6 +59,7 @@ def main():
     noseAssets = []
     eyesAssets = []
     eyebrowsAssets = []
+    specialAssets = []
     lString = tk.StringVar(assetFrame, value="")
     lBox = ttk.Combobox(assetFrame, textvariable=lString, height=len(lAssets), values=lAssets)
     lBox.grid(column=0, row=0)
@@ -75,14 +81,39 @@ def main():
     eyebrowsString = tk.StringVar(assetFrame, value="")
     eyebrowsBox = ttk.Combobox(assetFrame, textvariable=eyebrowsString, height=len(eyebrowsAssets), values=eyebrowsAssets)
     eyebrowsBox.grid(column=0, row=6)
+    poseString = tk.StringVar(assetFrame, value="")
+    poseBox = ttk.Combobox(assetFrame, textvariable=poseString, height=len(poseAssets),
+                               values=poseAssets)
+    poseBox.grid(column=0, row=7)
+    lLabel = tk.Label(assetFrame, text="Left").grid(column=1, row=0)
+    rLabel = tk.Label(assetFrame, text="Right (Body in special pose)").grid(column=1, row=1)
+    headLabel = tk.Label(assetFrame, text="Head").grid(column=1, row=2)
+    mouthLabel = tk.Label(assetFrame, text="Mouth").grid(column=1, row=3)
+    noseLabel = tk.Label(assetFrame, text="Nose").grid(column=1, row=4)
+    eyesLabel = tk.Label(assetFrame, text="Eyes").grid(column=1, row=5)
+    eyebrowsLabel = tk.Label(assetFrame, text="Eyebrows").grid(column=1, row=6)
+    poseLabel = tk.Label(assetFrame, text="Pose").grid(column=1, row=7)
+    characterLabel = tk.Label(charFrame, text="Character").grid(column=0, row=1)
+
     def compileImage():
         global myimg
         myimg = ImageTk.PhotoImage(Image.open("zilch.png").resize((480, 480)))
-        out = ImageConverters.ICSayoriTurned(myimg, [rString, lString, headString, mouthString, noseString, eyesString,
+        if characterString.get().lower() == "sayori" and poseString.get() == "turned":
+            out = ImageConverters.ICSayoriTurned(myimg, [rString, lString, headString, mouthString, noseString, eyesString,
+                                                     eyebrowsString, characterString])
+        if characterString.get().lower() == "sayori" and poseString.get() == "tapping":
+            out = ImageConverters.ICSayoriTap(myimg, [rString, headString, mouthString, noseString, eyesString,
                                                      eyebrowsString, characterString])
         myimg = ImageTk.PhotoImage(out)
         imageLabel.config(image=myimg)
+
     def updateChar():
+        global poseAssets
+        if characterString.get().lower() == "sayori":
+            poseAssets = mpt_s.assets['poses']
+            poseBox.config(values=poseAssets)
+
+    def updateCharPose():
         global rAssets
         global lAssets
         global headAssets
@@ -90,7 +121,8 @@ def main():
         global noseAssets
         global eyesAssets
         global eyebrowsAssets
-        if characterString.get().lower() == "sayori":
+        global specialAssets
+        if characterString.get().lower() == "sayori" and poseString.get() == "turned":
             lAssets = mpt_s.assets['l']
             rAssets = mpt_s.assets['r']
             headAssets = mpt_s.assets['head']
@@ -105,10 +137,25 @@ def main():
             noseBox.config(values=noseAssets)
             eyesBox.config(values=eyesAssets)
             eyebrowsBox.config(values=eyebrowsAssets)
+        if characterString.get().lower() == "sayori" and poseString.get() == "tapping":
+            specialAssets = mpt_s.assets['tap']
+            headAssets = mpt_s.assets['head']
+            mouthAssets = mpt_s.assets['mouthtap']
+            noseAssets = mpt_s.assets['nose']
+            eyesAssets = mpt_s.assets['eyestap']
+            eyebrowsAssets = mpt_s.assets['eyebrowstap']
+            rBox.config(values=specialAssets)
+            headBox.config(values=headAssets)
+            mouthBox.config(values=mouthAssets)
+            noseBox.config(values=noseAssets)
+            eyesBox.config(values=eyesAssets)
+            eyebrowsBox.config(values=eyebrowsAssets)
     compileButton = tk.Button(master, command=compileImage, text="Compile")
     compileButton.grid(column=0, row=2)
-    updateButton = tk.Button(master, command=updateChar, text="Select Character")
+    updateButton = tk.Button(master, command=updateCharPose, text="Load Pose")
     updateButton.grid(column=0, row=3)
+    selCharButton = tk.Button(master, command=updateChar, text="Load Character")
+    selCharButton.grid(column=0, row=4)
     master.mainloop()
 
 if __name__ == '__main__':
