@@ -3,6 +3,7 @@ from PIL import ImageTk, Image
 from tkinter import ttk
 import os
 import mpt_s
+import mpt_y
 import ImageConverters
 # PLANS:
 # Make a function that loads eyes/nose/eyebrows/mouth whenever poses are selected and updated, and load poses when characters are selected and updated.
@@ -104,6 +105,9 @@ def main():
         if characterString.get().lower() == "sayori" and poseString.get() == "tapping":
             out = ImageConverters.ICSayoriTap(myimg, [rString, headString, mouthString, noseString, eyesString,
                                                      eyebrowsString, characterString])
+        if characterString.get().lower() == "yuri" and poseString.get() == "turned":
+            out = ImageConverters.ICYuriTurned(myimg, [rString, lString, headString, mouthString, noseString, eyesString,
+                                                     eyebrowsString, characterString])
         myimg = ImageTk.PhotoImage(out)
         imageLabel.config(image=myimg)
 
@@ -111,7 +115,9 @@ def main():
         global poseAssets
         if characterString.get().lower() == "sayori":
             poseAssets = mpt_s.assets['poses']
-            poseBox.config(values=poseAssets)
+        if characterString.get().lower() == "yuri":
+            poseAssets = mpt_y.assets['poses']
+        poseBox.config(values=poseAssets)
 
     def updateCharPose():
         global rAssets
@@ -150,6 +156,22 @@ def main():
             noseBox.config(values=noseAssets)
             eyesBox.config(values=eyesAssets)
             eyebrowsBox.config(values=eyebrowsAssets)
+        if characterString.get().lower() == "yuri" and poseString.get() == "turned":
+            lAssets = mpt_y.assets['l']
+            rAssets = mpt_y.assets['r']
+            headAssets = mpt_y.assets['head']
+            mouthAssets = mpt_y.assets['mouth']
+            noseAssets = mpt_y.assets['nose']
+            eyesAssets = mpt_y.assets['eyes']
+            eyebrowsAssets = mpt_y.assets['eyebrows']
+            lBox.config(values=lAssets)
+            rBox.config(values=rAssets)
+            headBox.config(values=headAssets)
+            mouthBox.config(values=mouthAssets)
+            noseBox.config(values=noseAssets)
+            eyesBox.config(values=eyesAssets)
+            eyebrowsBox.config(values=eyebrowsAssets)
+        
     compileButton = tk.Button(master, command=compileImage, text="Compile")
     compileButton.grid(column=0, row=2)
     updateButton = tk.Button(master, command=updateCharPose, text="Load Pose")
